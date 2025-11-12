@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "60132919445",
+    "project_id": "mediplan-45ea3",
+    "storage_bucket": "mediplan-45ea3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:60132919445:android:d58c9ee184a3e888b7f39c",
+        "android_client_info": {
+          "package_name": "com.example.mediplan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQVoSuhiJa-T1VLu67B0fZveHCmAYlJ_g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
