@@ -13,7 +13,6 @@ class Home_screen extends StatefulWidget {
 class _Home_screenState extends State<Home_screen> {
   final user = FirebaseAuth.instance.currentUser;
 
-  // ✅ دالة حذف الدواء
   Future<void> deleteMedication(String docId) async {
     try {
       await FirebaseFirestore.instance
@@ -33,7 +32,6 @@ class _Home_screenState extends State<Home_screen> {
     }
   }
 
-  // ✅ دالة تسجيل الخروج
   Future<void> _logout() async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -68,14 +66,12 @@ class _Home_screenState extends State<Home_screen> {
           iconTheme: const IconThemeData(color: Colors.white),
         ),
 
-        // 🔹 إضافة الدراور (الجانبي)
         drawer: Drawer(
           backgroundColor: Colors.white.withOpacity(0.95),
           child: Column(
             children: [
-              const SizedBox(height: 100), // مسافة من الأعلى
+              const SizedBox(height: 100), 
 
-              // 🔹 زر Logout
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListTile(
@@ -99,7 +95,6 @@ class _Home_screenState extends State<Home_screen> {
 
               const SizedBox(height: 10),
 
-              // 🔹 زر About
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListTile(
@@ -115,7 +110,7 @@ class _Home_screenState extends State<Home_screen> {
                   tileColor: Colors.blueAccent.withOpacity(0.05),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   onTap: () {
-                    Navigator.pop(context); // اغلاق الـ Drawer أولاً
+                    Navigator.pop(context); 
                     showDialog(
                       context: context,
                       builder: (context) => Dialog(
@@ -194,7 +189,6 @@ class _Home_screenState extends State<Home_screen> {
               ),
             ),
 
-            // 🔹 عرض قائمة الأدوية من Firestore
             Padding(
               padding: const EdgeInsets.only(top: 100.0),
               child: StreamBuilder<QuerySnapshot>(
@@ -232,7 +226,7 @@ class _Home_screenState extends State<Home_screen> {
                       final times = List.from(med['times'] ?? []);
 
                       return Card(
-                        elevation: 5, // الظل
+                        elevation: 5, 
                         margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -328,7 +322,6 @@ class _Home_screenState extends State<Home_screen> {
     );
   }
 
-  // 🔹 دالة لعرض تأكيد تسجيل الخروج
   void _showLogoutConfirmationDialog() {
     showDialog(
       context: context,
@@ -343,7 +336,7 @@ class _Home_screenState extends State<Home_screen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context); // إغلاق الـ Dialog
-              _logout(); // تنفيذ تسجيل الخروج
+              _logout(); 
             },
             child: const Text(
               "Logout",
