@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends StatefulWidget {
   const WelcomeScreen({super.key});
 
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
                 'Welcome in MediPlan',
                 textStyle: const TextStyle(
                   color: Colors.white,
-                  fontSize: 25,
+                  fontSize: 30,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -28,6 +33,7 @@ class WelcomeScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
+
       body: Stack(
         children: [
           SizedBox.expand(
@@ -99,6 +105,11 @@ class WelcomeScreen extends StatelessWidget {
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 20),
+
+
+
               ],
             ),
           ),

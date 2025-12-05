@@ -32,7 +32,6 @@ class _AddMedicationState extends State<AddMedication> {
       context: context,
       initialTime: TimeOfDay.now(),
     );
-
     if (picked != null) {
       setState(() {
         doseTimes[index] = picked;
@@ -42,7 +41,6 @@ class _AddMedicationState extends State<AddMedication> {
 
   Future<void> saveMedication() async {
     final user = FirebaseAuth.instance.currentUser;
-
     if (user == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("⚠️ Please login first")),
@@ -50,10 +48,8 @@ class _AddMedicationState extends State<AddMedication> {
       return;
     }
 
-    final timesList = doseTimes
-        .where((t) => t != null)
-        .map((t) => t!.format(context))
-        .toList();
+    final timesList =
+    doseTimes.where((t) => t != null).map((t) => t!.format(context)).toList();
 
     try {
       await FirebaseFirestore.instance
@@ -70,11 +66,11 @@ class _AddMedicationState extends State<AddMedication> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("✅ Medication saved successfully!")),
+        const SnackBar(content: Text("Medication saved successfully ✅ ")),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("❌ Error saving medication: $e")),
+        SnackBar(content: Text(" Error saving medication: $e ❌")),
       );
     }
   }
@@ -94,41 +90,33 @@ class _AddMedicationState extends State<AddMedication> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 200),
-
-                  // اسم الدواء
                   TextField(
                     controller: _nameController,
                     decoration: InputDecoration(
                       labelText: "Medication Name",
                       labelStyle: const TextStyle(color: Colors.white),
-                      prefixIcon:
-                      const Icon(Icons.medication, color: Colors.white),
+                      prefixIcon: const Icon(Icons.medication, color: Colors.white),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(color: Colors.white70),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide:
-                        const BorderSide(color: Colors.white, width: 2),
+                        borderSide: const BorderSide(color: Colors.white, width: 2),
                       ),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                     ),
                     style: const TextStyle(color: Colors.white),
                   ),
-
                   const SizedBox(height: 35),
-
-                  // جرعة الدواء
                   TextField(
                     onChanged: (value) {
                       dosageAmount = value;
                     },
                     decoration: InputDecoration(
                       labelText: "Dosage Amount",
-                      labelStyle:
-                      const TextStyle(color: Colors.white, fontSize: 20),
+                      labelStyle: const TextStyle(color: Colors.white, fontSize: 20),
                       prefixIcon: const Icon(Icons.scale, color: Colors.white),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -136,21 +124,16 @@ class _AddMedicationState extends State<AddMedication> {
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
-                        borderSide:
-                        const BorderSide(color: Colors.white, width: 2),
+                        borderSide: const BorderSide(color: Colors.white, width: 2),
                       ),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.2),
                     ),
                     style: const TextStyle(color: Colors.white),
                   ),
-
                   const SizedBox(height: 30),
-
-                  // نوع الدواء
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(15),
@@ -159,8 +142,7 @@ class _AddMedicationState extends State<AddMedication> {
                     child: DropdownButton<String>(
                       value: selectedMedicationType,
                       dropdownColor: Colors.black87,
-                      icon:
-                      const Icon(Icons.arrow_drop_down, color: Colors.white),
+                      icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                       hint: const Text(
                         "Select medication type",
                         style: TextStyle(color: Colors.white70),
@@ -168,23 +150,19 @@ class _AddMedicationState extends State<AddMedication> {
                       items: const [
                         DropdownMenuItem(
                           value: "Tablet",
-                          child: Text("💊 Tablet",
-                              style: TextStyle(color: Colors.white)),
+                          child: Text("💊 Tablet", style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem(
                           value: "Syrup",
-                          child: Text("🧴 Syrup ",
-                              style: TextStyle(color: Colors.white)),
+                          child: Text("💧 Syrup ", style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem(
                           value: "Injection",
-                          child: Text("💉 Injection ",
-                              style: TextStyle(color: Colors.white)),
+                          child: Text("💉 Injection ", style: TextStyle(color: Colors.white)),
                         ),
                         DropdownMenuItem(
                           value: "Effervescent",
-                          child: Text("⚡ Effervescent",
-                              style: TextStyle(color: Colors.white)),
+                          child: Text("🫧 Effervescent", style: TextStyle(color: Colors.white)),
                         ),
                       ],
                       onChanged: (String? newValue) {
@@ -195,13 +173,9 @@ class _AddMedicationState extends State<AddMedication> {
                       underline: const SizedBox(),
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
-                  // عدد الجرعات
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 5),
+                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                     decoration: BoxDecoration(
                       color: Colors.white.withOpacity(0.2),
                       borderRadius: BorderRadius.circular(15),
@@ -210,8 +184,7 @@ class _AddMedicationState extends State<AddMedication> {
                     child: DropdownButton<String>(
                       value: selectedDoseCount,
                       dropdownColor: Colors.black87,
-                      icon:
-                      const Icon(Icons.arrow_drop_down, color: Colors.white),
+                      icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
                       hint: const Text(
                         "Select number of doses per day",
                         style: TextStyle(color: Colors.white70),
@@ -231,10 +204,7 @@ class _AddMedicationState extends State<AddMedication> {
                       underline: const SizedBox(),
                     ),
                   ),
-
                   const SizedBox(height: 30),
-
-                  // اختيار أوقات الجرعات
                   if (doseTimes.isNotEmpty)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,39 +230,39 @@ class _AddMedicationState extends State<AddMedication> {
                         );
                       }),
                     ),
-
                   const SizedBox(height: 30),
-
-                  // زر الحفظ + إشعارات
                   Center(
                     child: ElevatedButton(
-                      onPressed: () async {
+                      onPressed: (_nameController.text.isNotEmpty &&
+                          dosageAmount != null &&
+                          selectedMedicationType != null &&
+                          selectedDoseCount != null)
+                          ? () async {
                         await saveMedication();
-
                         int notifyId =
                             DateTime.now().millisecondsSinceEpoch ~/ 1000;
-
                         for (var t in doseTimes) {
                           if (t != null) {
-                            await NotificationService.scheduleDailyNotification(
+                            await NotificationService.scheduleNotification(
                               id: notifyId++,
-                              title: "⏰ وقت الدواء!",
-                              body: "خذ جرعة: ${_nameController.text}",
-                              hour: t.hour,      // 🟢 إضافة
-                              minute: t.minute,  // 🟢 إضافة
+                              title: "It's time to take your medicine 🔔",
+                              body:
+                                  "Name : ${_nameController.text}\n"
+                              "The Medication Type is : $selectedMedicationType\n"
+                                  "Dose : $dosageAmount",
+                              hour: t.hour,
+                              min: t.minute,
                             );
                           }
                         }
-
-
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                "✅ تم حفظ الدواء وتحديد التذكيرات بنجاح!"),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                      },
+                        // ScaffoldMessenger.of(context).showSnackBar(
+                        //   const SnackBar(
+                        //     content: Text("Save Done ✅"),
+                        //     backgroundColor: Colors.green,
+                        //   ),
+                        // );
+                      }
+                          : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent,
                         padding: const EdgeInsets.symmetric(
@@ -307,7 +277,6 @@ class _AddMedicationState extends State<AddMedication> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 30),
                 ],
               ),

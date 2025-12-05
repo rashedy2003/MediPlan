@@ -14,7 +14,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         repeatForever: false,
         animatedTexts: [
           TypewriterAnimatedText(
-            'Add Medication',
+            'Add Medication' ,
             speed: const Duration(milliseconds: 150),
             textStyle: const TextStyle(
               color: Colors.white,

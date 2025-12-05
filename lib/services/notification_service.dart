@@ -1,70 +1,90 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import '../Widgets/FullScreen_Alert/full_screen_alert.dart';
 
 class NotificationService {
-  static final FlutterLocalNotificationsPlugin _notifications =
-  FlutterLocalNotificationsPlugin();
+  static final FlutterLocalNotificationsPlugin _notifications = FlutterLocalNotificationsPlugin();
+  static bool _initialized = false;
 
   static Future<void> init() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const initSettings = InitializationSettings(android: androidSettings);
+    if (_initialized) return;
 
-    await _notifications.initialize(initSettings);
+    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const initSettings = InitializationSettings(android: androidInit);
+
+    await _notifications.initialize(initSettings, onDidReceiveNotificationResponse: (details) {
+      if (details.payload != null) {
+        _onNotificationTap(details.payload!);
+      }
+    });
+
     tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
 
-    // طلب صلاحية الإشعارات على Android 13+
-    final androidImpl = _notifications
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+    const channel = AndroidNotificationChannel(
+      'med_channel',
+      'Medication Reminders',
+      description: 'Daily reminders for medication',
+      importance: Importance.max,
+      playSound: true,
+    );
 
+    final androidImpl = _notifications.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
     await androidImpl?.requestNotificationsPermission();
+    await androidImpl?.createNotificationChannel(channel);
+
+    _initialized = true;
+    print('✅ NotificationService initialized');
   }
 
-  static Future<void> scheduleDailyNotification({
+  static void Function(String)? onTapCallback;
+
+  static void _onNotificationTap(String payload) {
+    if (onTapCallback != null) onTapCallback!(payload);
+  }
+
+  static Future<void> scheduleNotification({
     required int id,
     required String title,
     required String body,
     required int hour,
-    required int minute,
+    required int min,
   }) async {
     final now = tz.TZDateTime.now(tz.local);
-    var scheduleTime = tz.TZDateTime(
+    var scheduledDate = tz.TZDateTime(
       tz.local,
       now.year,
       now.month,
       now.day,
       hour,
-      minute,
+      min,
     );
 
-    if (scheduleTime.isBefore(now)) {
-      scheduleTime = scheduleTime.add(const Duration(days: 1));
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
 
     await _notifications.zonedSchedule(
       id,
       title,
       body,
-      scheduleTime,
-      const NotificationDetails(
+      scheduledDate,
+      NotificationDetails(
         android: AndroidNotificationDetails(
-          'med_channel',
+          'med_channel_reminder',
           'Medication Reminders',
-          channelDescription: 'Daily medicine reminder notifications',
           importance: Importance.max,
-          priority: Priority.max,
+          priority: Priority.high,
           playSound: true,
-          enableVibration: true,
+          icon: '@mipmap/ic_launcher',
+          fullScreenIntent: true,
         ),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time, // تكرار يومي
+      matchDateTimeComponents: DateTimeComponents.time,
+      payload: body,
     );
-
-
-
-
   }
-
 }
 
